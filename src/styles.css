@@ -1,0 +1,594 @@
+/* ==========================================================================
+   Linko dizayn tizimi (linko.uz asosida) — mobil-birinchi, silliq
+   Brend: #5a5bff | hover #4243ff | yashil #18b45a | fon #f4f5f6
+   Shrift: Golos Text | tugmalar: pill (to'liq yumaloq)
+   ========================================================================== */
+:root {
+  --brand: #5a5bff;
+  --brand-dark: #4243ff;
+  --green: #18b45a;
+  --tg: #229ed9;
+  --tg-dark: #1c8bbf;
+  --bg: #f4f5f6;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e6e8ef;
+  --border-strong: #d6dbe7;
+  --error: #e11d48;
+  --radius-card: 26px;
+  --radius-field: 16px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  background-image: radial-gradient(120% 60% at 50% 0%, #eef0ff 0%, var(--bg) 55%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  padding: 22px 22px 22px;
+  box-shadow: 0 12px 44px rgba(31, 41, 55, 0.1);
+  animation: card-in 0.45s var(--ease) both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+}
+
+.card--center {
+  text-align: center;
+}
+
+/* ---- Header: logo + progress ---- */
+.card-top {
+  margin-bottom: 22px;
+}
+
+.card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.logo {
+  display: block;
+  height: 38px;
+  width: auto;
+}
+
+/* ---- Til almashtirgich (bayroq) ---- */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  background: #f3f4f8;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 13px 7px 8px;
+  cursor: pointer;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), transform 0.12s var(--ease);
+}
+
+@media (hover: hover) {
+  .lang-toggle:hover {
+    border-color: var(--border-strong);
+    background: #eceef3;
+  }
+}
+
+.lang-toggle:active {
+  transform: scale(0.96);
+}
+
+.flag {
+  display: block;
+  flex: 0 0 auto;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(31, 41, 55, 0.08);
+}
+
+.progress {
+  height: 7px;
+  background: #eceef3;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand), var(--brand-dark));
+  border-radius: 999px;
+  transition: width 0.5s var(--ease);
+}
+
+/* ---- Typography ---- */
+h1 {
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.28;
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+h2.question {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.32;
+  margin: 6px 0 18px;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.muted.small {
+  font-size: 13px;
+}
+
+.intro {
+  margin-bottom: 20px;
+}
+
+/* ---- Step (silliq kirish animatsiyasi) ---- */
+.step-anim {
+  animation: step-in 0.4s var(--ease) both;
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+
+.step-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+  margin-bottom: 6px;
+}
+
+/* ---- Option cards ---- */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-height: 56px;
+  text-align: left;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  background: #fafbff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-field);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), transform 0.12s var(--ease),
+    box-shadow 0.18s var(--ease);
+}
+
+@media (hover: hover) {
+  .option:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+  }
+}
+
+.option:active {
+  transform: scale(0.985);
+}
+
+.option--active {
+  border-color: var(--brand);
+  background: rgba(90, 91, 255, 0.07);
+  box-shadow: 0 0 0 3px rgba(90, 91, 255, 0.1);
+}
+
+.option-mark {
+  flex: 0 0 auto;
+  width: 23px;
+  height: 23px;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  position: relative;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+}
+
+.option-mark--box {
+  border-radius: 7px;
+}
+
+.option--active .option-mark {
+  border-color: var(--brand);
+  background: var(--brand);
+}
+
+.option--active .option-mark::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  animation: pop 0.2s var(--ease) both;
+}
+
+@keyframes pop {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
+}
+
+/* ---- Fields (kontakt) ---- */
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px 0 4px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px; /* 16px = iOS zoom oldini oladi */
+  color: var(--text);
+  background: #fafbff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-field);
+  padding: 15px 16px;
+  outline: none;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.field input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(90, 91, 255, 0.14);
+}
+
+.field--error input,
+.field--error .dial-btn {
+  border-color: var(--error);
+}
+
+/* ---- Telefon: davlat prefiksi + raqam ---- */
+.phone-row {
+  display: flex;
+  gap: 8px;
+}
+
+.phone-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Custom prefiks dropdown */
+.dial {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.dial-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 100%;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  background: #fafbff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-field);
+  padding: 0 12px;
+  cursor: pointer;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease), background 0.18s var(--ease);
+}
+
+@media (hover: hover) {
+  .dial-btn:hover {
+    border-color: var(--border-strong);
+  }
+}
+
+.dial-btn--open {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(90, 91, 255, 0.14);
+}
+
+.dial-flag {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.dial-code {
+  white-space: nowrap;
+}
+
+.dial-caret {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform 0.2s var(--ease);
+}
+
+.dial-btn--open .dial-caret {
+  transform: rotate(-135deg) translate(-1px, -1px);
+}
+
+.dial-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  min-width: 230px;
+  max-height: 280px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(31, 41, 55, 0.16);
+  animation: dial-in 0.18s var(--ease) both;
+}
+
+@keyframes dial-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.dial-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: 11px;
+  padding: 11px 12px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease);
+}
+
+@media (hover: hover) {
+  .dial-item:hover {
+    background: #f3f4f8;
+  }
+}
+
+.dial-item--active {
+  background: rgba(90, 91, 255, 0.08);
+  color: var(--brand);
+}
+
+.dial-item .dial-name {
+  flex: 1 1 auto;
+}
+
+.dial-item .dial-code {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.dial-item--active .dial-code {
+  color: var(--brand);
+}
+
+.field-msg {
+  color: var(--error);
+  font-size: 13px;
+}
+
+.form-error {
+  margin-top: 14px;
+  color: var(--error);
+  font-size: 14px;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 999px;
+  padding: 15px 24px;
+  min-height: 52px;
+  cursor: pointer;
+  transition: background 0.18s var(--ease), opacity 0.18s var(--ease), transform 0.12s var(--ease),
+    box-shadow 0.18s var(--ease);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  color: #fff;
+  background: var(--brand);
+  box-shadow: 0 6px 18px rgba(90, 91, 255, 0.32);
+}
+
+@media (hover: hover) {
+  .btn--primary:hover:not(:disabled) {
+    background: var(--brand-dark);
+  }
+}
+
+.btn--ghost {
+  color: var(--muted);
+  background: transparent;
+  box-shadow: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+@media (hover: hover) {
+  .btn--ghost:hover:not(:disabled) {
+    color: var(--text);
+  }
+}
+
+.btn--tg {
+  width: 100%;
+  margin-top: 16px;
+  color: #fff;
+  background: var(--tg);
+  box-shadow: 0 6px 18px rgba(34, 158, 217, 0.32);
+}
+
+@media (hover: hover) {
+  .btn--tg:hover {
+    background: var(--tg-dark);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.actions .btn--primary {
+  margin-left: auto;
+}
+
+/* ---- Success check ---- */
+.check {
+  width: 72px;
+  height: 72px;
+  margin: 6px auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #fff;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 8px 24px rgba(24, 180, 90, 0.35);
+  animation: check-in 0.5s var(--ease) both;
+}
+
+@keyframes check-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---- Mobil moslashuv ---- */
+@media (max-width: 420px) {
+  .card {
+    border-radius: 22px;
+    padding: 18px 16px;
+  }
+  h1 {
+    font-size: 21px;
+  }
+  h2.question {
+    font-size: 19px;
+  }
+}
+
+/* ---- Animatsiyani kamaytirish so'rovi ---- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
