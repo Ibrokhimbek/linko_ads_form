@@ -22,11 +22,36 @@ npm run dev              # web (5173) + api (3001) birga ishlaydi
 ```
 Brauzerda: http://localhost:5173/form/1
 
-## Productionga build
+## Productionga build (lokal)
 ```bash
 npm run build            # frontendni dist/ ga quradi
 npm start                # Express dist/ ni va /api ni bitta portda tarqatadi
 ```
+
+## Vercel'ga deploy
+Vercel'da frontend statik (`dist`), backend esa `api/` ichidagi **serverless function**lar
+(`api/lead.js`) sifatida ishlaydi. `vercel.json` Vite preseti va SPA routing'ni sozlaydi.
+
+1. Kodni GitHub'ga yuboring: `git push origin main`
+2. [vercel.com](https://vercel.com) → **New Project** → `linko_ads_form` reposini import qiling.
+3. **Environment Variables** bo'limiga quyidagilarni qo'shing (deploy'dan oldin!):
+
+   | Key | Value |
+   |-----|-------|
+   | `AMOCRM_SUBDOMAIN` | `linkouz` |
+   | `AMOCRM_ACCESS_TOKEN` | *(lokal `.env` dan ko'chiring)* |
+   | `AMOCRM_POS_PIPELINE_ID` | `9857042` |
+   | `AMOCRM_POS_STATUS_ID` | `78392222` |
+   | `AMOCRM_SFA_PIPELINE_ID` | `10394262` |
+   | `AMOCRM_SFA_STATUS_ID` | `82159646` |
+   | `VITE_TELEGRAM_URL` | `https://t.me/linko_sotuv_bot` |
+
+   > `VITE_TELEGRAM_URL` — **build vaqtida** o'qiladi, shuning uchun birinchi deploy'dan
+   > oldin qo'shilishi shart (keyin o'zgartirilsa, qayta deploy kerak).
+
+4. **Deploy** bosing. Tayyor URL: `https://<loyiha>.vercel.app/form/pos` va `/form/sfa`.
+
+CLI orqali (muqobil): `npx vercel` (login) → env'larni qo'shing → `npx vercel --prod`.
 
 ## Sozlash kerak bo‘ladigan joylar
 | Nima | Qayerda |
