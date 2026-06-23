@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getForm, UI, t } from '../forms.config.js'
+import { initMetrika, reachGoal } from '../yandexMetrika.js'
 import OptionStep from '../components/OptionStep.jsx'
 import ContactStep from '../components/ContactStep.jsx'
 import ThankYou from '../components/ThankYou.jsx'
@@ -24,6 +25,11 @@ export default function FormPage() {
   const [contact, setContact] = useState({ name: '', phone: '' })
   const [status, setStatus] = useState('filling') // filling | submitting | success | error
   const [serverError, setServerError] = useState('')
+
+  // Forma ochilganda mos Yandex.Metrika counter'ini ishga tushiramiz
+  useEffect(() => {
+    if (form?.metrikaId) initMetrika(form.metrikaId)
+  }, [form?.metrikaId])
 
   function toggleLang() {
     setLang((l) => {
@@ -91,6 +97,8 @@ export default function FormPage() {
         throw new Error(data.message || 'Server xatosi')
       }
       setStatus('success')
+      // Konversiya maqsadi (Yandex.Metrika)
+      reachGoal(form.metrikaId, 'lead_submitted')
     } catch (err) {
       setServerError(err.message || 'Nimadir xato ketdi')
       setStatus('error')

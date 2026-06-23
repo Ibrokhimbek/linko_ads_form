@@ -15,6 +15,7 @@ export const FORMS = {
   sfa: {
     slug: 'sfa',
     crmTitle: 'SFA — Instagram forma',
+    metrikaId: 110014443, // Yandex.Metrika counter (SFA)
     telegramUrl: '', // bo'sh bo'lsa .env dagi VITE_TELEGRAM_URL ishlatiladi
     welcome: {
       title: {
@@ -75,6 +76,7 @@ export const FORMS = {
   pos: {
     slug: 'pos',
     crmTitle: 'POS — Instagram forma',
+    metrikaId: 110014497, // Yandex.Metrika counter (POS)
     telegramUrl: '',
     welcome: {
       title: {
