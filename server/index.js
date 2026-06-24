@@ -19,7 +19,7 @@ app.get('/api/health', (_req, res) => {
 
 // Asosiy endpoint: forma javoblarini qabul qilib AmoCRM da lid yaratadi
 app.post('/api/lead', async (req, res) => {
-  const { formTitle, formSlug, answers } = req.body || {}
+  const { formTitle, formSlug, answers, utm } = req.body || {}
 
   if (!Array.isArray(answers) || answers.length === 0) {
     return res.status(400).json({ ok: false, message: 'Javoblar bo‘sh' })
@@ -37,6 +37,7 @@ app.post('/api/lead', async (req, res) => {
       formSlug,
       formTitle: formTitle || `Forma ${formSlug || ''}`.trim(),
       answers,
+      utm,
     })
     return res.json({ ok: true, leadId: result.leadId })
   } catch (err) {

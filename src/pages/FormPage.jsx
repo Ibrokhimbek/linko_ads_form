@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getForm, UI, t } from '../forms.config.js'
 import { initMetrika, reachGoal } from '../yandexMetrika.js'
+import { captureUtm } from '../utm.js'
 import OptionStep from '../components/OptionStep.jsx'
 import ContactStep from '../components/ContactStep.jsx'
 import ThankYou from '../components/ThankYou.jsx'
@@ -25,6 +26,8 @@ export default function FormPage() {
   const [contact, setContact] = useState({ name: '', phone: '' })
   const [status, setStatus] = useState('filling') // filling | submitting | success | error
   const [serverError, setServerError] = useState('')
+  // Landingga kirilgan paytdagi UTM metkalarini bir marta ushlab qolamiz
+  const [utm] = useState(captureUtm)
 
   // Forma ochilganda mos Yandex.Metrika counter'ini ishga tushiramiz
   useEffect(() => {
@@ -90,7 +93,7 @@ export default function FormPage() {
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formSlug: form.slug, formTitle: form.crmTitle, lang, answers: payloadAnswers }),
+        body: JSON.stringify({ formSlug: form.slug, formTitle: form.crmTitle, lang, answers: payloadAnswers, utm }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))

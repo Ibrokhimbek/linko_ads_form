@@ -59,6 +59,29 @@ const AMO_FIELD_MAP = {
   },
 }
 
+// UTM metkalari -> AmoCRM tracking_data maydonlari (ID'lar /custom_fields dan olingan)
+const UTM_FIELD_MAP = {
+  utm_source: 635071,
+  utm_medium: 635067,
+  utm_campaign: 635069,
+  utm_content: 635065,
+  utm_term: 635073,
+  utm_referrer: 635075,
+  fbclid: 635101,
+  gclid: 635097,
+  yclid: 635099,
+}
+
+function buildUtmFields(utm) {
+  if (!utm || typeof utm !== 'object') return []
+  const out = []
+  for (const [key, field_id] of Object.entries(UTM_FIELD_MAP)) {
+    const v = utm[key]
+    if (v) out.push({ field_id, values: [{ value: String(v).slice(0, 250) }] })
+  }
+  return out
+}
+
 // formSlug + javoblar -> AmoCRM custom_fields_values massivi
 function buildCustomFields(slug, answers) {
   const map = AMO_FIELD_MAP[(slug || '').toLowerCase()]
@@ -132,11 +155,15 @@ function pickByMap(answers, mapName) {
   return a ? a.value : null
 }
 
-function buildNoteText(formTitle, answers) {
+function buildNoteText(formTitle, answers, utm) {
   const lines = [`📩 Instagram forma: ${formTitle}`, '']
   for (const a of answers) {
     if (!a.value) continue
     lines.push(`${a.label}: ${a.value}`)
+  }
+  // utm_id uchun alohida AmoCRM maydoni yo'q — izohga yozamiz
+  if (utm && utm.utm_id) {
+    lines.push('', `utm_id: ${utm.utm_id}`)
   }
   return lines.join('\n')
 }
@@ -145,7 +172,7 @@ function buildNoteText(formTitle, answers) {
  * AmoCRM da yangi lid (kontakt bilan birga) yaratadi va javoblarni izoh qilib qo'shadi.
  * @returns {Promise<{leadId:number, contactId:number|null}>}
  */
-export async function createLead({ formSlug, formTitle, answers }) {
+export async function createLead({ formSlug, formTitle, answers, utm }) {
   const cfg = getConfig()
   if (!cfg.ready) {
     const err = new Error('AmoCRM sozlanmagan: .env da AMOCRM_SUBDOMAIN va AMOCRM_ACCESS_TOKEN ni to‘ldiring')
@@ -183,8 +210,8 @@ export async function createLead({ formSlug, formTitle, answers }) {
   if (statusId) lead.status_id = statusId
   if (cfg.responsibleId) lead.responsible_user_id = cfg.responsibleId
 
-  // Forma javoblarini AmoCRM maxsus maydonlariga ulaymiz
-  const customFields = buildCustomFields(formSlug, answers)
+  // Forma javoblari + UTM metkalarini AmoCRM maxsus maydonlariga ulaymiz
+  const customFields = [...buildCustomFields(formSlug, answers), ...buildUtmFields(utm)]
   if (customFields.length) lead.custom_fields_values = customFields
 
   // 1) Lid + kontaktni birga yaratamiz (complex endpoint)
@@ -201,7 +228,7 @@ export async function createLead({ formSlug, formTitle, answers }) {
   // 2) Barcha javoblarni izoh (note) qilib qo'shamiz
   try {
     await amoFetch(cfg, `/api/v4/leads/${leadId}/notes`, [
-      { note_type: 'common', params: { text: buildNoteText(formTitle, answers) } },
+      { note_type: 'common', params: { text: buildNoteText(formTitle, answers, utm) } },
     ])
   } catch (e) {
     // Izoh qo'shilmasa ham lid yaratilgan — jarayonni to'xtatmaymiz, faqat log.

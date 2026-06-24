@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, message: 'Method not allowed' })
   }
 
-  const { formTitle, formSlug, answers } = req.body || {}
+  const { formTitle, formSlug, answers, utm } = req.body || {}
 
   if (!Array.isArray(answers) || answers.length === 0) {
     return res.status(400).json({ ok: false, message: 'Javoblar bo‘sh' })
@@ -27,6 +27,7 @@ export default async function handler(req, res) {
       formSlug,
       formTitle: formTitle || `Forma ${formSlug || ''}`.trim(),
       answers,
+      utm,
     })
     return res.status(200).json({ ok: true, leadId: result.leadId })
   } catch (err) {
