@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getForm, UI, t } from '../forms.config.js'
 import { initMetrika, reachGoal } from '../yandexMetrika.js'
+import { initPixel, trackLead } from '../metaPixel.js'
 import { captureUtm } from '../utm.js'
 import OptionStep from '../components/OptionStep.jsx'
 import ContactStep from '../components/ContactStep.jsx'
@@ -29,10 +30,11 @@ export default function FormPage() {
   // Landingga kirilgan paytdagi UTM metkalarini bir marta ushlab qolamiz
   const [utm] = useState(captureUtm)
 
-  // Forma ochilganda mos Yandex.Metrika counter'ini ishga tushiramiz
+  // Forma ochilganda analitikani ishga tushiramiz (Yandex.Metrika + Meta Pixel)
   useEffect(() => {
     if (form?.metrikaId) initMetrika(form.metrikaId)
-  }, [form?.metrikaId])
+    if (form?.metaPixelId) initPixel(form.metaPixelId)
+  }, [form?.metrikaId, form?.metaPixelId])
 
   function toggleLang() {
     setLang((l) => {
@@ -100,8 +102,9 @@ export default function FormPage() {
         throw new Error(data.message || 'Server xatosi')
       }
       setStatus('success')
-      // Konversiya maqsadi (Yandex.Metrika)
-      reachGoal(form.metrikaId, 'lead_submitted')
+      // Konversiyalar — faqat real muvaffaqiyatli zayavkadan keyin
+      reachGoal(form.metrikaId, 'lead_submitted') // Yandex.Metrika goal
+      trackLead(form.metaPixelId) // Meta Pixel 'Lead'
     } catch (err) {
       setServerError(err.message || 'Nimadir xato ketdi')
       setStatus('error')

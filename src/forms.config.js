@@ -77,6 +77,7 @@ export const FORMS = {
     slug: 'pos',
     crmTitle: 'POS — Instagram forma',
     metrikaId: 110014497, // Yandex.Metrika counter (POS)
+    metaPixelId: '1205966414607877', // Meta (Facebook) Pixel — linko_pixel (POS)
     telegramUrl: '',
     welcome: {
       title: {
